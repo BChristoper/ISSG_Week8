@@ -1,24 +1,58 @@
-// bob.js
-const crypto = require("crypto");
+const crypto = require('crypto');  
 
-const receivedMessage = "I want some apples";
-const receivedSignature = "982fe429161b530e25d7fd55af4aefbe7e4d09f1e8a7a447371600547a0dad629d80f3b0d5e940b4eaa66d48cd996569ca5964506a47c6f448b74ca11ab7d6237fd087bc4f3e4c24dca50652b32bd4a4939be33a11b4c4f0176810e34fd3ea7c69ec0d2d66adead9a5e5c2df4b90f412578524f06234f59519209e8fa5db1d1b605f9a97327c2bc413f3edbfb6e36fdd9a71e6aef4d246d0c9405519d444f2dd6dec7751de7e6a4763f72e9f1db84532363d973c74be89673e6cc485353360ef327c56c1bfcb5bd242eb68c5690c4d8b7441dcf38ae8a4b51909ea0054afad5473c7fef556b514a6124bd762273ca1171531f70c637cb43c516f61bb1ed1f441"; // Replace with actual signature from alice.js
-const alicePublicKeyPem = 
-`-----BEGIN RSA PUBLIC KEY-----
-MIIBCgKCAQEA2hXXG8s6IzQVEPUaGzZMn3WdMjnEiMOk/LlxZ/y5K37Dnpao6AoC
-x4fMfAStthkQkJqqSmcrjzfbByQTrNGDu1nj5+xNjgujpsFygOnXbxoOsW8qF7JM
-HgGF0PDOp1NJWKi7ftojRWZfZcbNfcUiqjUn7ggrPBMaA413BDElZrqC4BdVcoUe
-oqRfSy/MwxVF2ujN4sUe2VH5EIpkvt+CYNWuKN78Zd3hbU26cLpBvC73pcIqKouZ
-RvFrf9F9R2G9YmkauOgWnwA0J9bgNPXRegS2SjlR4E8KaxdhwEMlPY/6cL8XSQVq
-k3Jm/vcOo9mEdilY0xjUSbcdkBLi+2i+8wIDAQAB
------END RSA PUBLIC KEY-----`;
+const alicePublicKey = `-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxHrbVVHDim0U+5abws3j
+63luIPjUfgMK7l15sdtyee7v8FNA0mLCUZtwIEFI2vCA3IsAppjGT8xVCiqdSV5h
+T87TjbySLGp02ozylVTlX2IStdm53RATXpD7Glz9JwJLjUFlSHmeEn3dtXKIpDej
+FroRsZI579Bigwknu+t5c1Cwkc15OD2mxPOULbNQIb5/6my0yW1Ykbhz4SS8qoYe
+JaknftmrU8JeojLhQs2guBC0ybTcdyRwqBo4SNtRvMKEOM4Xb/8t6zFNnv2lEwag
+7aa41tlJIyuSOMgKuna3XAh3ti3TftB7g0xNsgYHA1fqAVbKnQYV6jndlROXYMMG
+pwIDAQAB
+-----END PUBLIC KEY-----`; 
 
-const alicePublicKey = crypto.createPublicKey(alicePublicKeyPem);
+const bobPrivateKey = `-----BEGIN PRIVATE KEY-----
+MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC7BEl1drUl3yge
+UlqFXYLCIcUQl1+Ajln/Q903kcY5IuVkKvT5lM3UsZOsy1DAeAsovtRI6K12NVrJ
+cmRdWzr8xzmqwkcMHbYdZDx7nsiJ+U6Mh6Vm5Gz/bg6PTqiJO9tvnFkUKCaRexKt
+ZTcbkRbQLt9nPHa0jY+ttntteWLo2DQioG1wTCkWZ8lgVfWg7KInLW6Fk6+cbG0D
+cfpQAEbswuz/VeTvmtFPTtmVlLcRszoOMs+rlekzrNxpszrt0F8LS1z9rmvF4ibY
+JOiagxbBAAoJnTmqCM1G5Bf8YlbIlSgKjMfvEjeCYC3kR8HvLbSwMgyph5DKH7EC
+2b/tgR6RAgMBAAECggEACBcIYndvIKNFpgIj/k7sQB+b2brim7oMtJkn8aZxr7kN
+uUaOcFl6ie/gloH5DUpkGTAgGMNP9aQbOEmlg9BVfefUW8mpryF95kmWwDY/MJDD
+UBryEcBh4q7NHG/npIAdXvehdtjByltLlIqjVqLxHLJaYang7LCO/ZG+Rx8QI0hc
+Dy11iUQxVCQkZl6GiK75z1xxDujOz0gtI93FA5LJkRaE4d3YxEthP1RAZHZTC4fN
+nKbO9KNAMq1006ND28cp9FKGqQ+o2Ltqep9HJ2xzGgGkg+Svupnc2okJaVZNEAK5
+MMBj/hMpJcK7dxzvVAoUA6feqrEs16ax5H6mdG/zrQKBgQDjZuBcVurwPIPKJwMx
+7NWrWB4mW50G0D3uf6yKZ7Z6dIDXAm/vpJrLgHV7cfmp0MZydL3C1CGN3KEAMtAq
+wHurh8ULYHKPVBk+ZwQMogXpWOX4PrQpcw5H0WFAOqipJ8gIwbnQWGwVWGbB1hGS
+xHWGKuccWXmjNfeouqww7Ag9XwKBgQDSiTnRGfIwmoxEWO9aZR8jBnsm/f/lMzcI
+2aePB6PnwGZjnGRpOaY3OnEBm4yl9rZQ54dTgY+NSES0HN9Q6wx8S/JoxKp8mdqt
+kB+GZLQ2fFoioVqx01MQfBzmK8Nk/7nHppfYCCRaP0vBUAEMUD9bEAD0PDPlYIvx
+9fTDu6I6DwKBgDr5Hw5TbDJJP1RZsbZs2SzKeWcxMxPlRWpoqfJq2yP+ursH4sef
+RJWqBs2wzTKA9jYQmHXCVcFYilhm1R2BNZFScIN2y77n7HQGe0JbcnUFnP44JLjr
+IbT2U+Y4UC0uJ+49b1bc14rhliSGw5/wWxokXjM38Remk0eqwaUeUTS5AoGAVsxC
+bOXAhq9AwvDThTYJdzw1y6aOOGU7/EcXoI0q0uHslIamkwc0crKCYoJJoyaqlYJO
+tWvFzh6MTKFWpBqzpA7/mpfyHbqkgEfZ52NfNNNhqcNSC9wu863nkDFctigD5L7W
+/TamHhrYVZNxSy1OYXGgoxCq6Jc8Ov4G8idKQ5sCgYEAskeJLG8F8Dkq2fPbP9IQ
+kpz93pdP/zRKVauotpYRNOh20RwjGF8FLj+dU0uZ8MmTLDHBJAj6PE0bISvbCWAc
+yg90PDTO6vrDVESM8foWBF5fDKwarZjZssja5gWc+EancJ3RrbU+pqJmTjbElJu/
+6+2ghEKONMxVpOkfSslidmA=
+-----END PRIVATE KEY-----`;
 
-const verifier = crypto.createVerify("sha256");
-verifier.update(receivedMessage);
-verifier.end();
-const isVerified = verifier.verify(alicePublicKey, receivedSignature, "hex");
+const recipientPrivateKey = crypto.createPrivateKey(bobPrivateKey);
 
-console.log("Signature Verification:", isVerified);
-console.log("Message:", receivedMessage);
+const signature = '83f9f912dbbd3c7fd0b4bc4fd048995fa8d74814467d52479cf5813e08830e2d08fc1ac7edba2a21ce1fc07820b43323a62169749b7a3bdb68b3a495a5df37fe83b3da79ddfe99393ceb01a77d4acd981996e0b95708686311fc9b8b428033da50a035de5b2f745506765ce1ad6125a67c390fdc7e910c820cda2efb213b85be34a0da713afa7cbfd9ab1d122d41640bd95e896dfa8260f0888faa24694390da4882bb3e13e8d25810d631cc1d07822ba6b56076100e0e9ba42b4ab098399cb96428d26d2ff013e8993603b39de64ca332f9c6a5da25eaf680e2d0bc156cf65bdb108c4e3d3aeca76cef1f27f8fc6277d0a546aaad4c2785c53913db045844d5';
+const ciphertextHex = '20e466352472d28454f4780e207e2f3b51ed615660be8dff4be26f7b56872b71244f10fbdce7bef7555e2b1621820d182c49e132de83534a8f92b806389b639166273869aef3277ed2e08353c947f31943c8ae2d02a3dd3033f25d4de9ed2d265c3ae7e717ecf9d35475dec07efea79d86bc24c4d83e399d03eadb84f4afe077f6e62c6a3546c555d81b0c1b1dae7d8eefe7b44721f30fe6a77142c3dd2ea971bf000539c5baaae0ddc748bd7b18b9aeff709eb64d9cb87873538568f7723e35ac26ee1d448d6ab46a21508cb3854d8224254a2e5140f1763d9fc6957d839ae91d330c31f5120abf6e668d7c7ccdf96c35889b783f4dd686341694b8d40fb0f1';
+const ciphertext = Buffer.from(ciphertextHex, "hex");
+
+const recoveredPlaintext = crypto.privateDecrypt(recipientPrivateKey, ciphertext);
+
+
+const verify = crypto.createVerify('SHA256');  
+verify.update(recoveredPlaintext);  
+verify.end();  
+const isVerified = verify.verify(alicePublicKey, signature, 'hex');  
+
+
+console.log(`Signature Verification: ${isVerified}`);  
+console.log(`Message: ${recoveredPlaintext}`);  
